@@ -24,7 +24,6 @@ export class Color_picker {
             for (let j = 0; j < Consts.cp_colors[i].length; j++) {
                 this.squares[i].push(new Color_square(
                     j * Consts.cp_square_size, i * Consts.cp_square_size, Consts.cp_colors[i][j]));
-                console.log(this.squares[i][j]);
             }
         }
 

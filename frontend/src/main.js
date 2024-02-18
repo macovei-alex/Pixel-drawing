@@ -88,3 +88,19 @@ color_picker.html.addEventListener('click', (event) => {
 
 canvas.draw_all();
 color_picker.draw_all();
+
+let transition_label = document.getElementById('transition_label');
+let x_area = document.getElementById('x_area');
+let y_area = document.getElementById('y_area');
+
+function keypress_handler(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        let x = x_area.value.trim();
+        let y = y_area.value.trim();
+        transition_label.value = 'x = ' + x + 'y = ' + y;
+    }
+}
+
+x_area.addEventListener('keypress', keypress_handler);
+y_area.addEventListener('keypress', keypress_handler);
