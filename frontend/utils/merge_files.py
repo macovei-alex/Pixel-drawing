@@ -1,7 +1,7 @@
 import os
 
 
-def print_file_contents_in_folder(folder_path: str, output_file_path: str):
+def merge_files(folder_path: str, output_file_path: str, do_print: bool = False):
     with open(output_file_path, 'w') as output_file:
         for file_name in os.listdir(folder_path):
 
@@ -18,6 +18,10 @@ def print_file_contents_in_folder(folder_path: str, output_file_path: str):
 
                     joined_content: str = '\n'.join(contents_string)
 
+                    if do_print:
+                        print(joined_content)
+                        print('----------------------')
+
                     output_file.write(joined_content)
 
                 print("Merged file:", file_name)
@@ -31,4 +35,4 @@ print()
 print('Folder path to source files: ' + folder_path)
 print('File path for the merged file: ' + output_file_path)
 
-print_file_contents_in_folder(folder_path, output_file_path)
+merge_files(folder_path, output_file_path)
