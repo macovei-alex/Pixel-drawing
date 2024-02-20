@@ -11,8 +11,6 @@ def print_file_contents_in_folder(folder_path: str, output_file_path: str):
                 continue
 
             if os.path.isfile(file_path):
-                print("File:", file_name)
-
                 with open(file_path, 'r') as input_file:
                     contents = input_file.read()
                     contents_string = [line.removeprefix('export ') for line in str(contents).split('\n')
@@ -22,11 +20,15 @@ def print_file_contents_in_folder(folder_path: str, output_file_path: str):
 
                     output_file.write(joined_content)
 
+                print("Merged file:", file_name)
+
 
 folder_path: str = os.path.abspath('../src')
 output_file_path: str = os.path.abspath(
     folder_path.removesuffix('src') + '/merged.js')
-print(folder_path)
-print(output_file_path)
+
+print()
+print('Folder path to source files: ' + folder_path)
+print('File path for the merged file: ' + output_file_path)
 
 print_file_contents_in_folder(folder_path, output_file_path)
