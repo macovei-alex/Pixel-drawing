@@ -39,13 +39,13 @@ export class Canvas {
         let max_x = this.squares[0][bound.last.col].x + Consts.square_size + this.translation.x;
         let max_y = this.squares[bound.last.row][0].y + Consts.square_size + this.translation.y;
 
-        for (let i = bound.first.col; i < bound.last.col + 1; i++) {
+        for (let i = bound.first.col; i < bound.last.col + 2; i++) {
             Functions.line(this.context,
                 i * Consts.square_size + this.translation.x, this.translation.y,
                 i * Consts.square_size + this.translation.x, max_y);
         }
 
-        for (let i = bound.first.row; i < bound.last.row + 1; i++) {
+        for (let i = bound.first.row; i < bound.last.row + 2; i++) {
             Functions.line(this.context,
                 this.translation.x, i * Consts.square_size + this.translation.y,
                 max_x, i * Consts.square_size + this.translation.y);
@@ -66,8 +66,8 @@ export class Canvas {
 
         if (Functions.valid_indeces(this.squares, this.mouse_index.row, this.mouse_index.col)) {
             this.context.strokeRect(
-                this.squares[this.mouse_index.row][this.mouse_index.col].x,
-                this.squares[this.mouse_index.row][this.mouse_index.col].y,
+                this.squares[this.mouse_index.row][this.mouse_index.col].x + this.translation.x,
+                this.squares[this.mouse_index.row][this.mouse_index.col].y + this.translation.y,
                 Consts.square_size, Consts.square_size);
         }
     }
