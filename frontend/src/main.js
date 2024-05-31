@@ -1,8 +1,12 @@
 import { Canvas } from "./Canvas.js";
 import { Color_picker } from "./Color_picker.js";
 
-let canvas = new Canvas(document.getElementById('main_widget'));
-let color_picker = new Color_picker(document.getElementById('color_picker'));
+const canvas = new Canvas(document.getElementById('main_widget'));
+const color_picker = new Color_picker(document.getElementById('color_picker'));
+const translation_label = document.getElementById('translation_label');
+const x_input = document.getElementById('x_input');
+const y_input = document.getElementById('y_input');
+const jump_button = document.getElementById('jump_button');
 
 let canvas_info = {
     mouse_down_timestamp: 0
@@ -10,6 +14,13 @@ let canvas_info = {
 
 let color_picker_info = {
     mouse_down_timestamp: 0
+}
+
+function set_translation(square_count_x, square_count_y) {
+    canvas.translation.x = -square_count_x * Consts.square_size;
+    canvas.translation.y = -square_count_y * Consts.square_size;
+    canvas.draw_all();
+    translation_label.textContent = "x = " + square_count_x + " y = " + square_count_y;
 }
 
 canvas.html.addEventListener('mousedown', (event) => {
@@ -26,6 +37,9 @@ canvas.html.addEventListener('click', (event) => {
     }
 
     let pos = canvas.get_square_at({ x: event.offsetX, y: event.offsetY });
+    if (!Functions.valid_indeces(canvas.squares, pos.row, pos.col)) {
+        return;
+    }
     canvas.squares[pos.row][pos.col].color
         = color_picker.squares[color_picker.chosen_index.row][color_picker.chosen_index.col].color;
 
@@ -39,6 +53,7 @@ canvas.html.addEventListener('mousemove', (event) => {
 
         canvas.translation.x += event.movementX;
         canvas.translation.y += event.movementY;
+        translation_label.textContent = "x = " + Math.floor(-canvas.translation.x / Consts.square_size) + " y = " + Math.floor(-canvas.translation.y / Consts.square_size);
         canvas.draw_all();
 
     } else if (event.buttons === 0) {
@@ -89,18 +104,18 @@ color_picker.html.addEventListener('click', (event) => {
 canvas.draw_all();
 color_picker.draw_all();
 
-let transition_label = document.getElementById('transition_label');
-let x_area = document.getElementById('x_area');
-let y_area = document.getElementById('y_area');
-
 function keypress_handler(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
-        let x = x_area.value.trim();
-        let y = y_area.value.trim();
-        transition_label.value = 'x = ' + x + 'y = ' + y;
+        let x, y;
+        x = parseInt(x_input.value.trim());
+        y = parseInt(y_input.value.trim());
+        if(isNaN(x) || isNaN(y)) {
+            return;
+        }
+        set_translation(x, y);
     }
 }
 
-x_area.addEventListener('keypress', keypress_handler);
-y_area.addEventListener('keypress', keypress_handler);
+x_input.addEventListener('keypress', keypress_handler);
+y_input.addEventListener('keypress', keypress_handler);

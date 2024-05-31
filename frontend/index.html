@@ -8,23 +8,25 @@
     <title>Pixel drawing</title>
   </head>
   <body>
-    <label id="transition_label">x = 0, y = 0</label>
+    <label id="translation_label">x = 0, y = 0</label>
     <br />
 
     <canvas id="main_widget" class="canvas"></canvas>
     <canvas id="color_picker" class="canvas"></canvas>
     <br />
 
-    <textarea
-      id="x_area"
-      class="textarea"
+    <input
+      id="x_input"
+      class="input"
       placeholder="Enter x coordinate:"
-    ></textarea>
+    ></input>
 
-    <textarea
-      id="y_area"
-      class="textarea"
+    <input
+      id="y_input"
+      class="input"
       placeholder="Enter y coordinate:"
-    ></textarea>
+    ></input>
+
+    <button id="jump_button" class="button">Jump</button>
   </body>
 </html>
