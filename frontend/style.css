@@ -1,3 +1,7 @@
 .canvas {
-    border: #000 2px solid;
+  border: #000 2px solid;
+}
+
+.textarea {
+  resize: none;
 }

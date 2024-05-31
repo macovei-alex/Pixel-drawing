@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="merged.js" defer></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="bundle.js" defer></script>
     <title>Pixel drawing</title>
-</head>
-<body>
-    <label id="transition_label">x = 0, y = 0</label><br>
+  </head>
+  <body>
+    <label id="transition_label">x = 0, y = 0</label>
+    <br />
 
     <canvas id="main_widget" class="canvas"></canvas>
-    <canvas id="color_picker" class="canvas"></canvas><br>
+    <canvas id="color_picker" class="canvas"></canvas>
+    <br />
 
-    <textarea id="x_area" class="textarea" placeholder="Enter x coordinate:"></textarea>
-    <textarea id="y_area" class="textarea" placeholder="Enter y coordinate:"></textarea>
-</body>
+    <textarea
+      id="x_area"
+      class="textarea"
+      placeholder="Enter x coordinate:"
+    ></textarea>
+
+    <textarea
+      id="y_area"
+      class="textarea"
+      placeholder="Enter y coordinate:"
+    ></textarea>
+  </body>
 </html>
