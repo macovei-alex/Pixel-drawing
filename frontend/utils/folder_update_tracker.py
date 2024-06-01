@@ -1,5 +1,6 @@
 import subprocess
 import time
+import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -13,45 +14,47 @@ class ChangeHandler(FileSystemEventHandler):
 
     def on_modified(self, event) -> None:
         if not event.is_directory:
-            self.handle_event("File modified")
+            self.handle_event('File modified', event.src_path)
 
     def on_created(self, event) -> None:
         if not event.is_directory:
-            self.handle_event("File created")
+            self.handle_event('File created', event.src_path)
 
     def on_deleted(self, event) -> None:
         if not event.is_directory:
-            self.handle_event("File deleted")
+            self.handle_event('File deleted', event.src_path)
 
-    def handle_event(self, event_name: str) -> None:
+    def handle_event(self, event_name: str, parameter_name: str) -> None:
         if event_name != 'File modified':
             return
         if self.check_handle_event():
-            print(event_name)
-            print(f"Executing script: {self.script_path}")
+            print(f'{event_name}: {parameter_name}')
+            print(f'Executing script: {self.script_path}')
             self.last_modification = time.time()
-            subprocess.run(["python", self.script_path])
+            subprocess.run(['python', self.script_path])
+            print()
 
     def check_handle_event(self) -> bool:
-        if self.last_modification + self.min_interval < time.time():
-            return True
-        return False
+        if self.last_modification + self.min_interval > time.time():
+            return False
+        return True
 
 
 def monitor_folder(path_to_watch: str):
-    event_handler = ChangeHandler('bundle_files.py', 0.5)
+    event_handler = ChangeHandler('utils\\bundle_files.py', 0.5)
     observer = Observer()
     observer.schedule(event_handler, path=path_to_watch, recursive=False)
     observer.start()
     try:
         while True:
-            time.sleep(1)
+            time.sleep(10)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
 
 
-if __name__ == "__main__":
-    path = "..\\src"  # Monitor the current directory. Change this to the path you want to monitor.
-    print(f"Monitoring changes in folder: {path}")
-    monitor_folder(path)
+while not os.path.exists(os.curdir + '\\src'):
+    os.chdir('..')
+folder_path: str = os.path.abspath('src')
+print(f'Monitoring changes in folder: {folder_path}')
+monitor_folder(folder_path)

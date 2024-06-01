@@ -24,17 +24,17 @@ def bundle_files(folder_path: str, output_file_path: str, do_print: bool = False
 
                     output_file.write(joined_content)
 
-                print("Merged file:", file_name)
+                print("Added file to bundle:", file_name)
 
 
-while not os.path.exists(os.curdir + '/src'):
+while not os.path.exists(os.curdir + '\\src'):
     os.chdir('..')
 
 folder_path: str = os.path.abspath('src')
 output_file_path: str = os.path.abspath('bundle.js')
 
-print()
-print('Folder path to source files: ' + folder_path)
-print('File path for the merged file: ' + output_file_path)
+# print()
+# print('Folder path to source files: ' + folder_path)
+# print('File path for the merged file: ' + output_file_path)
 
 bundle_files(folder_path, output_file_path)
