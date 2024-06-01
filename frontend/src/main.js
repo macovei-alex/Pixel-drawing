@@ -119,3 +119,14 @@ function keypress_handler(event) {
 
 x_input.addEventListener('keypress', keypress_handler);
 y_input.addEventListener('keypress', keypress_handler);
+
+fetch('http://localhost:8000/test')
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        console.log(data)
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });

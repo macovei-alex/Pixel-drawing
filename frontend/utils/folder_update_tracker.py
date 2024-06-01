@@ -49,12 +49,15 @@ def monitor_folder(path_to_watch: str):
         while True:
             time.sleep(10)
     except KeyboardInterrupt:
+        print('Monitoring stopped')
         observer.stop()
     observer.join()
 
 
-while not os.path.exists(os.curdir + '\\src'):
-    os.chdir('..')
+while not os.path.exists("frontend\\src"):
+    os.chdir("..")
+os.chdir("frontend")
 folder_path: str = os.path.abspath('src')
+print()
 print(f'Monitoring changes in folder: {folder_path}')
 monitor_folder(folder_path)
