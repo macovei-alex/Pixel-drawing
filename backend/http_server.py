@@ -1,14 +1,20 @@
 import http.server
 import socketserver
-from typing import override
+from typing import Callable, override
 
 
 class HttpServer(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        self.routes: dict[str, Callable] = {
+            "/test": self.test_GET
+        }
+        super().__init__(*args, directory=None, **kwargs)
 
     @override
     def do_GET(self):
-        if self.path == '/test':
-            self.test_GET()
+        route_func: Callable = self.routes[self.path]
+        if route_func:
+            route_func()
         else:
             super().do_GET()
 
