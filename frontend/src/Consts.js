@@ -3,7 +3,7 @@ export class Consts {
     static square_count = 20;
     static canvas_width = 800;
     static canvas_height = 600;
-    static default_color = 'white';
+    static default_color = '#ffffff';
 
     static cp_width = 400;
     static cp_height = 200;

@@ -194,7 +194,7 @@ class Consts {
     static square_count = 20;
     static canvas_width = 800;
     static canvas_height = 600;
-    static default_color = 'white';
+    static default_color = '#ffffff';
     static cp_width = 400;
     static cp_height = 200;
     static cp_colors = [
@@ -314,14 +314,29 @@ function keypress_handler(event) {
         set_translation(x, y);
     }
 }
+function intToHex(int) {
+  return "#" + int.toString(16).padStart(6, "0");
+}
 x_input.addEventListener('keypress', keypress_handler);
 y_input.addEventListener('keypress', keypress_handler);
-fetch('http://localhost:8000/test')
+fetch('http://localhost:8000/test-file')
     .then(response => {
-        return response.text()
+        return response.json();
     })
-    .then(data => {
-        console.log(data)
+    .then(table => {
+        console.log(table);
+        var head = {
+            row: table['head'].indexOf('row'),
+            col: table['head'].indexOf('column'),
+            color: table['head'].indexOf('color'),
+        }
+        var data = table['data'];
+        console.log(head);
+        console.log(data);
+        for (let i = 0; i < data.length; i++) {
+            canvas.squares[data[i][head.row]][data[i][head.col]].color = data[i][head.color];
+            console.log(data[i].color);
+        }
     })
     .catch((error) => {
         console.error('Error:', error);

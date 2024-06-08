@@ -1,12 +1,19 @@
 import http.server
+import json
+import os
 import socketserver
 from typing import Callable, override
+import file_operations as fileops
+import pandas as pd
 
 
 class HttpServer(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
+        if os.path.exists("backend"):
+            os.chdir("backend")
         self.routes: dict[str, Callable] = {
-            "/test": self.test_GET
+            "/test": self.test_GET,
+            "/test-file": self.test_file_GET,
         }
         super().__init__(*args, directory=None, **kwargs)
 
@@ -33,9 +40,24 @@ class HttpServer(http.server.SimpleHTTPRequestHandler):
     def test_GET(self):
         try:
             self.send_response(200)
-            self.send_header('Content-type', 'text/html')
+            self.send_header("Content-type", "text/html")
             self.end_headers()
-            self.wfile.write(b'test get method')
+            self.wfile.write(b"test get method")
+        except Exception as e:
+            self.send_error(500, str(e))
+
+    def test_file_GET(self):
+        try:
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            df: pd.DataFrame = fileops.read_csv("saves/test.csv")
+            print(df.to_numpy())
+            self.wfile.write(b"{\n\t\"head\": ")
+            self.wfile.write(json.dumps(df.columns.tolist()).encode())
+            self.wfile.write(b",\n\t\"data\": ")
+            self.wfile.write(json.dumps(df.to_numpy().tolist()).encode())
+            self.wfile.write(b"\n}")
         except Exception as e:
             self.send_error(500, str(e))
 
