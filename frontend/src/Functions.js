@@ -13,4 +13,12 @@ export class Functions {
         context.lineTo(x2, y2);
         context.stroke();
     }
+
+    static int_to_hex(number) {
+        return "#" + number.toString(16).padStart(6, "0");
+    }
+
+    static debug(...message) {
+        console.log(...message);
+    }
 }

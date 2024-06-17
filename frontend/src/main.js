@@ -110,37 +110,33 @@ function keypress_handler(event) {
         let x, y;
         x = parseInt(x_input.value.trim());
         y = parseInt(y_input.value.trim());
-        if(isNaN(x) || isNaN(y)) {
+        if (isNaN(x) || isNaN(y)) {
             return;
         }
         set_translation(x, y);
     }
 }
 
-function intToHex(int) {
-  return "#" + int.toString(16).padStart(6, "0");
-}
-
 x_input.addEventListener('keypress', keypress_handler);
 y_input.addEventListener('keypress', keypress_handler);
 
-fetch('http://localhost:8000/test-file')
+fetch('http://localhost:8000/test-pixels')
     .then(response => {
         return response.json();
     })
     .then(table => {
-        console.log(table);
+        Functions.debug(table);
         var head = {
             row: table['head'].indexOf('row'),
-            col: table['head'].indexOf('column'),
+            col: table['head'].indexOf('col'),
             color: table['head'].indexOf('color'),
         }
         var data = table['data'];
-        console.log(head);
-        console.log(data);
+        Functions.debug(head);
+        Functions.debug(data);
         for (let i = 0; i < data.length; i++) {
-            canvas.squares[data[i][head.row]][data[i][head.col]].color = data[i][head.color];
-            console.log(data[i].color);
+            canvas.squares[data[i][head.row]][data[i][head.col]].color = Functions.int_to_hex(data[i][head.color]);
+            Functions.debug(data[i].color);
         }
     })
     .catch((error) => {

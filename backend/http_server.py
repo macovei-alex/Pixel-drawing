@@ -3,7 +3,7 @@ import json
 import os
 import socketserver
 from typing import Callable, override
-import file_operations as fileops
+from db import MongoController
 import pandas as pd
 
 
@@ -13,8 +13,9 @@ class HttpServer(http.server.SimpleHTTPRequestHandler):
             os.chdir("backend")
         self.routes: dict[str, Callable] = {
             "/test": self.test_GET,
-            "/test-file": self.test_file_GET,
+            "/test-pixels": self.test_pixels_GET,
         }
+        self.mongo: MongoController = MongoController()
         super().__init__(*args, directory=None, **kwargs)
 
     @override
@@ -46,17 +47,17 @@ class HttpServer(http.server.SimpleHTTPRequestHandler):
         except Exception as e:
             self.send_error(500, str(e))
 
-    def test_file_GET(self):
+    def test_pixels_GET(self):
         try:
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            df: pd.DataFrame = fileops.read_csv("saves/test.csv")
-            print(df.to_numpy())
+            table_columns, table_rows = self.mongo.select_all()
+            print(table_columns, '\n', table_rows)
             self.wfile.write(b"{\n\t\"head\": ")
-            self.wfile.write(json.dumps(df.columns.tolist()).encode())
+            self.wfile.write(json.dumps(table_columns).encode())
             self.wfile.write(b",\n\t\"data\": ")
-            self.wfile.write(json.dumps(df.to_numpy().tolist()).encode())
+            self.wfile.write(json.dumps(table_rows).encode())
             self.wfile.write(b"\n}")
         except Exception as e:
             self.send_error(500, str(e))
