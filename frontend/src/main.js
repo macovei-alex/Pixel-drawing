@@ -121,13 +121,13 @@ function keypress_handler(event) {
 x_input.addEventListener('keypress', keypress_handler);
 y_input.addEventListener('keypress', keypress_handler);
 
-fetch('http://127.0.0.1:8000/test-pixels')
+fetch('http://127.0.0.1:55055/pixels/save1')
     .then(response => {
         return response.json();
     })
     .then(table => {
         Logging.debug(table);
-        
+
         const head = {
             row: table['head'].indexOf('row'),
             col: table['head'].indexOf('col'),

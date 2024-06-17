@@ -41,7 +41,7 @@ class ChangeHandler(FileSystemEventHandler):
 
 
 def monitor_folder(path_to_watch: str):
-    event_handler = ChangeHandler("utils\\bundle-files.py", 0.5)
+    event_handler = ChangeHandler("utils\\bundle_files.py", 0.5)
     observer = Observer()
     observer.schedule(event_handler, path=path_to_watch, recursive=False)
     observer.start()
