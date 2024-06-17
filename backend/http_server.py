@@ -66,7 +66,7 @@ class HttpServer(http.server.SimpleHTTPRequestHandler):
 PORT: int = 8000
 
 try:
-    with socketserver.TCPServer(("localhost", PORT), HttpServer) as httpd:
+    with socketserver.TCPServer(("127.0.0.1", PORT), HttpServer) as httpd:
         print(f'Serving HTTP on port {PORT}')
         httpd.serve_forever()
 except KeyboardInterrupt:

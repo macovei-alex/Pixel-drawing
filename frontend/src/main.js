@@ -1,5 +1,6 @@
 import { Canvas } from "./Canvas.js";
 import { Color_picker } from "./Color_picker.js";
+import { Logging } from "./Logging.js";
 
 const canvas = new Canvas(document.getElementById('main_widget'));
 const color_picker = new Color_picker(document.getElementById('color_picker'));
@@ -120,25 +121,26 @@ function keypress_handler(event) {
 x_input.addEventListener('keypress', keypress_handler);
 y_input.addEventListener('keypress', keypress_handler);
 
-fetch('http://localhost:8000/test-pixels')
+fetch('http://127.0.0.1:8000/test-pixels')
     .then(response => {
         return response.json();
     })
     .then(table => {
-        Functions.debug(table);
+        Logging.debug(table);
         var head = {
             row: table['head'].indexOf('row'),
             col: table['head'].indexOf('col'),
             color: table['head'].indexOf('color'),
         }
         var data = table['data'];
-        Functions.debug(head);
-        Functions.debug(data);
+        Logging.debug(head);
+        Logging.debug(data);
         for (let i = 0; i < data.length; i++) {
-            canvas.squares[data[i][head.row]][data[i][head.col]].color = Functions.int_to_hex(data[i][head.color]);
-            Functions.debug(data[i].color);
+            color_str = Functions.int_to_hex(data[i][head.color]);
+            canvas.squares[data[i][head.row]][data[i][head.col]].color = color_str;
+            Logging.debug(color_str);
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
+        Logging.error('Error:', error);
     });
