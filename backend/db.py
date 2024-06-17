@@ -1,5 +1,6 @@
 from environment import MONGO_CONSTR, MONGO_DB, MONGO_COLLECTION
 import pymongo
+from data_manipulator import DataManipulator
 
 class MongoController:
     def __init__(self) -> None:
@@ -9,12 +10,7 @@ class MongoController:
 
     def select_all(self) -> tuple[list[str], list[list]]:
         json_data: list[dict] = list(self.collection.find({}, {"_id": 0}))
-        if len(json_data) == 0:
-            return [], []
-        
-        table_columns: list[str] = list(json_data[0].keys())
-        table_data: list = [list(row.values()) for row in json_data]
-        return table_columns, table_data
+        return DataManipulator.get_sendable_data(json_data)
 
 mongoDB = MongoController()
 print(mongoDB.select_all())

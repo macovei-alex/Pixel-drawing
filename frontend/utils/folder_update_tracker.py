@@ -14,24 +14,24 @@ class ChangeHandler(FileSystemEventHandler):
 
     def on_modified(self, event) -> None:
         if not event.is_directory:
-            self.handle_event('File modified', event.src_path)
+            self.handle_event("File modified", event.src_path)
 
     def on_created(self, event) -> None:
         if not event.is_directory:
-            self.handle_event('File created', event.src_path)
+            self.handle_event("File created", event.src_path)
 
     def on_deleted(self, event) -> None:
         if not event.is_directory:
-            self.handle_event('File deleted', event.src_path)
+            self.handle_event("File deleted", event.src_path)
 
     def handle_event(self, event_name: str, parameter_name: str) -> None:
-        if event_name != 'File modified':
+        if event_name != "File modified":
             return
         if self.check_handle_event():
-            print(f'{event_name}: {parameter_name}')
-            print(f'Executing script: {self.script_path}')
+            print(f"{event_name}: {parameter_name}")
+            print(f"Executing script: {self.script_path}")
             self.last_modification = time.time()
-            subprocess.run(['python', self.script_path])
+            subprocess.run(["python", self.script_path])
             print()
 
     def check_handle_event(self) -> bool:
@@ -41,7 +41,7 @@ class ChangeHandler(FileSystemEventHandler):
 
 
 def monitor_folder(path_to_watch: str):
-    event_handler = ChangeHandler('utils\\bundle_files.py', 0.5)
+    event_handler = ChangeHandler("utils\\bundle-files.py", 0.5)
     observer = Observer()
     observer.schedule(event_handler, path=path_to_watch, recursive=False)
     observer.start()
@@ -49,7 +49,7 @@ def monitor_folder(path_to_watch: str):
         while True:
             time.sleep(10)
     except KeyboardInterrupt:
-        print('Monitoring stopped')
+        print("Monitoring stopped")
         observer.stop()
     observer.join()
 
@@ -57,7 +57,7 @@ def monitor_folder(path_to_watch: str):
 while not os.path.exists("frontend\\src"):
     os.chdir("..")
 os.chdir("frontend")
-folder_path: str = os.path.abspath('src')
+folder_path: str = os.path.abspath("src")
 print()
-print(f'Monitoring changes in folder: {folder_path}')
+print(f"Monitoring changes in folder: {folder_path}")
 monitor_folder(folder_path)

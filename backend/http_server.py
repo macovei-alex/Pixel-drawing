@@ -31,13 +31,6 @@ class HttpServer(http.server.SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         super().end_headers()
 
-    # def do_OPTIONS(self):
-    #     self.send_response(200)
-    #     self.send_header("Access-Control-Allow-Origin", "*")
-    #     self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-    #     self.send_header("Access-Control-Allow-Headers", "Content-Type")
-    #     self.end_headers()
-
     def test_GET(self):
         try:
             self.send_response(200)
@@ -52,8 +45,9 @@ class HttpServer(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
+
             table_columns, table_rows = self.mongo.select_all()
-            print(table_columns, '\n', table_rows)
+
             self.wfile.write(b"{\n\t\"head\": ")
             self.wfile.write(json.dumps(table_columns).encode())
             self.wfile.write(b",\n\t\"data\": ")

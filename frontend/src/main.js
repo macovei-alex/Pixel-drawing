@@ -127,14 +127,17 @@ fetch('http://127.0.0.1:8000/test-pixels')
     })
     .then(table => {
         Logging.debug(table);
-        var head = {
+        
+        const head = {
             row: table['head'].indexOf('row'),
             col: table['head'].indexOf('col'),
             color: table['head'].indexOf('color'),
         }
-        var data = table['data'];
+        const data = table['data'];
+
         Logging.debug(head);
         Logging.debug(data);
+
         for (let i = 0; i < data.length; i++) {
             color_str = Functions.int_to_hex(data[i][head.color]);
             canvas.squares[data[i][head.row]][data[i][head.col]].color = color_str;
